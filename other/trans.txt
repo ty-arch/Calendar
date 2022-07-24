@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script>
+    document.documentElement.style.fontSize = document.documentElement.clientWidth / 39 + 'px'
+  </script>
+  <style>
+    body {
+      margin: 0;
+    }
+    html, body, #app {
+      height: 100%;
+    }
+
+    div {
+      display: flex;
+      width: 100%;
+      flex-direction: column;
+    }
+
+    .slider-page {
+      position: relative;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .scroll-wrapper {
+      position: absolute;
+      width: 156rem;
+      height: 100%;
+      flex-direction: row;
+    }
+
+    .slider-item {
+      height: 100%;
+      flex: 1;
+    }
+
+    .slider-item:nth-child(1) {
+      background-color: red;
+    }
+
+    .slider-item:nth-child(2) {
+      background-color: blue;
+    }
+
+    .slider-item:nth-child(3) {
+      background-color: pink;
+    }
+
+    .slider-item:nth-child(4) {
+      background-color: purple;
+    }
+
+    .slider-item .inner {
+      height: 100%;
+      justify-content: center;
+      align-items: center;
+      font-size: 5rem;
+    }
+
+  </style>
+</head>
+<body>
+  <div id="app">
+    <div class="slider-page">
+      <div class="scroll-wrapper">
+        <div class="slider-item">
+          <div class="inner">Page-1</div>
+        </div>
+        <div class="slider-item">
+          <div class="inner">Page-2</div>
+        </div>
+        <div class="slider-item">
+          <div class="inner">Page-3</div>
+        </div>
+        <div class="slider-item">
+          <div class="inner">Page-4</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const oSliderPage = document.querySelector('.slider-page'),
+          oScrollWrapper = oSliderPage.querySelector('.scroll-wrapper'),
+          oSlideriItems = oScrollWrapper.querySelectorAll('.slider-item'),
+          pageWidth = oSliderPage.offsetWidth;
+
+    let startX = 0, pageIndex = 0, distanceX = 0, isMove = false
+    
+
+    const init = () => {
+      bindEvent()
+    }
+
+    function bindEvent() {
+      oScrollWrapper.addEventListener('touchstart', handlerTouchStart, false)
+      oScrollWrapper.addEventListener('touchmove', handlerTouchMove, false)
+      oScrollWrapper.addEventListener('touchend', handlerTouchEnd, false)
+    }
+
+    function handlerTouchStart(e) {
+      startX = e.touches[0].clientX
+    }
+
+    function handlerTouchMove(e) {
+      const moveX = e.touches[0].clientX
+      if ((moveX > startX && pageIndex === 0) || (moveX < startX && pageIndex === oSlideriItems.length - 1)){
+        return
+      }
+
+      distanceX = moveX - startX
+      setTranslate(- pageWidth * pageIndex + distanceX)
+      isMove = true
+
+    }
+
+    function handlerTouchEnd(e) {
+      if (isMove) {
+        if(Math.abs(distanceX) >= pageWidth / 3) {
+          if (distanceX > 0) {
+            pageIndex --
+          }
+
+          if (distanceX < 0) {
+            pageIndex ++
+          }
+        }
+        setTranslate(- pageIndex * pageWidth)
+      }
+
+      startX = 0,
+      isMove = false,
+      distanceX = 0
+    }
+
+    function setTranslate(tranX) {
+      oScrollWrapper.style.transition = "all .1s"
+      oScrollWrapper.style.transform = `translateX(${tranX}px)`
+    }
+
+    init()
+  </script>
+</body>
+</html>
