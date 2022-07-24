@@ -1,25 +1,36 @@
-export function getFirstWeekDay(year, month) {
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    function getFirstWeekDay(year, month) {
   const date = new Date(year, month - 1, 1)
   return date.getDay()
 }
 
-export function getMonthDayCount(year, month) {
+function getMonthDayCount(year, month) {
   const date = new Date(year, month, 0)
   return date.getDate()
 }
 
-export function getLastMonthRestDays(year, month) {
+function getLastMonthRestDays(year, month) {
   const days = getFirstWeekDay(year, month)
-  let lastDate = getMonthDayCount(year, month)
+  let lastDate = getMonthDayCount(year, month - 1)
   const restDays = []
 
   while(restDays.length < days) {
-    restDays.push(lastDate --)
+    restDays.push(lastDate--)
   }
   return restDays.reverse()
 }
 
-export function getNextMonthRestDays(year, month) {
+
+function getNextMonthRestDays(year, month) {
   const lastMonthRestDayCount = getFirstWeekDay(year, month)
   const currentMonthDayCount = getMonthDayCount(year, month)
   const nextMonthRestDayCount = 42 - (lastMonthRestDayCount + currentMonthDayCount)
@@ -32,7 +43,8 @@ export function getNextMonthRestDays(year, month) {
   return restDays
 }
 
-export function getDateInfo(timeStamp){
+
+function getDateInfo(timeStamp){
   const date = timeStamp ? new Date(timeStamp) : new Date()
 
   return [
@@ -42,7 +54,7 @@ export function getDateInfo(timeStamp){
   ]
 }
 
-export function getFormatDate(year, month, date) {
+function getFormatDate(year, month, date) {
   const dateArr = [year, month, date]
 
   for (let i = 1; i < dateArr.length; i ++) {
@@ -51,3 +63,7 @@ export function getFormatDate(year, month, date) {
 
   return dateArr.join('-')
 }
+  console.log(getDateInfo()); 
+  </script>
+</body>
+</html>
